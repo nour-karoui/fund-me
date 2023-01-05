@@ -40,26 +40,26 @@ export const ProjectsList: React.FC<{projectsFactory: any, handleProjectChange: 
     }
 
     return (
-        <Box
-            maxW='lg'
-            borderWidth='1px'
-            borderRadius='lg'
-            borderColor='teal'
-        >
-            <InputGroup>
-                <Input value={value} onChange={handleInput} placeholder='Project Name' />
+        <Box maxW='lg'>
+            <InputGroup mb={3}>
+                <Input value={value} onChange={handleInput} placeholder='Search by project Name' />
                 <InputRightElement children={<SearchIcon color='teal.500' />} />
             </InputGroup>
-            {
-                filteredProjects?.map(
-                    (project, i) =>
-                        <Box onClick={() => handleProjectChange(project)} key={i}
-                             borderRadius='lg' p={4}
-                             _hover={{ color: "#F8F4EA", background: "#439A97", fontWeight: 'semibold', cursor: "pointer"}}>
-                            {project}
-                        </Box>
-                )
-            }
+            <Box borderWidth='1px'
+                 borderRadius='lg'
+                 borderColor='teal'>
+                {
+                    filteredProjects?.map(
+                        (project, i) =>
+                            <Box onClick={() => handleProjectChange(project)} key={i}
+                                 borderWidth='0.1px'
+                                 borderRadius='lg' p={4}
+                                 _hover={{ background: "rgba(173,227,225,0.25)", fontWeight: 'semibold', cursor: "pointer"}}>
+                                {project}
+                            </Box>
+                    )
+                }
+            </Box>
         </Box>
     )
 }

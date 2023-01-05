@@ -1,5 +1,16 @@
-import { Button, Center, Flex, Grid, GridItem, Stack } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import {
+    Button,
+    Center,
+    Flex,
+    Grid,
+    GridItem, Modal,
+    ModalBody, ModalCloseButton,
+    ModalContent, ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Stack
+} from "@chakra-ui/react";
+import React, {Fragment, useEffect} from "react";
 import { CreateProjectCard } from './createProjectCard';
 import { ProjectsList } from './projectsList';
 import { projectsFactory } from '../../helpers/initweb3';
@@ -24,37 +35,49 @@ export const ProjectsSection: React.FC<{setLatestTransaction: Function}> = ({set
     const toggleCard = () => {
         setShowCard(!showCard);
     }
+
+    const closeModal = () => {
+        setShowCard(false);
+    }
+
     return (
-        <Stack mt={6}>
-            <Flex alignContent={"center"} justifyContent={"center"}>
-                <Center>
-                    <Button leftIcon={<AddIcon />} colorScheme='teal' variant='solid' onClick={() => toggleCard()}>
-                        Create New Project
-                    </Button>
-                </Center>
-            </Flex>
-            { showCard ?
-                <Flex alignContent={"center"} justifyContent={"center"}>
-                    <Center>
-                        <CreateProjectCard setLatestTransaction={setLatestTransaction}></CreateProjectCard>
-                    </Center>
-                </Flex>
-            : null
-            }
-            
-            <Grid templateColumns='repeat(2, 1fr)' gap={2}>
-                <GridItem p={4} w='100%'>
-                    <ProjectsList projectsFactory={projectsFactoryContract} handleProjectChange={handleProjectChange}></ProjectsList>
-                </GridItem>
-                <GridItem p={4} w='100%'>
-                    {currentProject != ''
-                        ? <ProjectDetailCard projectName={currentProject}
-                                             setLatestTransaction={setLatestTransaction}/>
-                        : null
-                    }
-                    {/* <CreateProjectCard></CreateProjectCard> */}
-                </GridItem>
-            </Grid>
-        </Stack>
+        <Fragment>
+            <Stack mt={6}>
+                <Grid templateColumns='repeat(2, 1fr)' gap={2}>
+                    <GridItem p={4} w='100%'>
+
+                        <Flex my={3}>
+                            <Center>
+                                <Button leftIcon={<AddIcon />} colorScheme='teal' variant='solid' onClick={() => toggleCard()}>
+                                    Create New Project
+                                </Button>
+                            </Center>
+                        </Flex>
+
+                        <ProjectsList projectsFactory={projectsFactoryContract} handleProjectChange={handleProjectChange}></ProjectsList>
+                    </GridItem>
+                    <GridItem p={4} w='100%'>
+                        {currentProject != ''
+                            ? <ProjectDetailCard projectName={currentProject}
+                                                 setLatestTransaction={setLatestTransaction}/>
+                            : null
+                        }
+                    </GridItem>
+                </Grid>
+            </Stack>
+            <Modal isOpen={showCard} onClose={closeModal}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Create New Project</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Flex my={3} width="100%" >
+                            <CreateProjectCard createProjectCallback={closeModal}
+                                               setLatestTransaction={setLatestTransaction}/>
+                        </Flex>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+        </Fragment>
     );
 }
