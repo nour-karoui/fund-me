@@ -11,16 +11,14 @@ export const GetFunds: React.FC<{}> = () => {
     }
 
     const fundAccount = async () => {
-        const response = await RVLFaucet.fundAccount(address);
-        console.log(response); 
         try {
             const response = await RVLFaucet.fundAccount(address);
             setLastTransactionHash('https://goerli.etherscan.io/tx/' + response.hash);
             toast({
-                title: `Successfully Funded ${address} With 1 RVL !`,
+                title: `Successfully Funded ${address.slice(0, 7)}... With 1 RVL !`,
                 description: `Check the process of your transaction on Etherscan ${response.hash}`,
                 status: 'success',
-                duration: 3000,
+                duration: 7000,
                 isClosable: true,
               });
         } catch(error: any) {
@@ -49,25 +47,19 @@ export const GetFunds: React.FC<{}> = () => {
                         </FormControl>
                     </CardBody>
                     <CardFooter>
-                        <Button colorScheme='teal' onClick={() => fundAccount()}>Create New Project</Button>
+                        <Button colorScheme='teal' onClick={() => fundAccount()}>Send Me RVL Please!</Button>
                     </CardFooter>
                 </Card>
-                <Alert status='success'>
+                {lastTransactionHash ?
+                <Alert borderRadius={'lg'} status='success'>
                     <AlertIcon />
                         <Link href={lastTransactionHash} isExternal>
                             Follow your latest transaction on Etherscan <ExternalLinkIcon mx='2px' />
-                        </Link>
+                        </Link>      
                 </Alert>
+                : null
+                }
             </VStack>
-            {lastTransactionHash ?
-            <Alert status='success'>
-                <AlertIcon />
-                    <Link href={lastTransactionHash} isExternal>
-                        Follow your latest transaction on Etherscan <ExternalLinkIcon mx='2px' />
-                    </Link>      
-            </Alert>
-            : null
-            }  
         </Center>
     )
 }

@@ -51,16 +51,8 @@ export const Header: React.FC<{}> = () => {
       setUserBalance(ethers.utils.formatEther(balance));
       const RVLBalance = await RVLToken.balanceOf(address);
       setRVLBalance(ethers.utils.formatEther(RVLBalance));
-      await getuserBalance(address);
   }
-  const getuserBalance = async (address: string) => {
-      const balance = await provider?.getBalance(address, "latest");
-      console.log(ethers.utils.formatEther(balance || '0'));
-      
-  }
-
   return (
-    <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           
@@ -103,6 +95,5 @@ export const Header: React.FC<{}> = () => {
           </Flex>
         </Flex>
       </Box>
-    </>
   );
 }

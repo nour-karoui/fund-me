@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { VStack } from '@chakra-ui/react';
-import { ethers } from 'ethers';
 import { provider } from '../../helpers/initWeb3';
 import {
   Box,
@@ -18,7 +17,6 @@ import { AtSignIcon } from '@chakra-ui/icons';
 
 export const Header: React.FC<{}> = () => {
   const [defaultAccount, setDefaultAccount] = useState<string|null>(null);
-  const [userBalance, setUserBalance] = useState<string|null>(null);
   const toast = useToast();
   const connectwalletHandler = () => {
       if (window.ethereum) {
@@ -46,18 +44,9 @@ export const Header: React.FC<{}> = () => {
       const address = await newAccount.getAddress();
       setDefaultAccount(address);
       localStorage.setItem('isConnected', true.toString());
-      const balance = await newAccount.getBalance();
-      setUserBalance(ethers.utils.formatEther(balance));
-      await getuserBalance(address);
-  }
-  const getuserBalance = async (address: string) => {
-      const balance = await provider?.getBalance(address, "latest");
-      console.log(ethers.utils.formatEther(balance || '0'));
-      
   }
 
   return (
-    <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           
@@ -84,12 +73,6 @@ export const Header: React.FC<{}> = () => {
                         <Box>
                             <strong>Your Address is :</strong> <Box>{defaultAccount?.slice(0, 17)}...</Box>
                         </Box>
-                        <Box>    
-                            <strong>And You Have :</strong> <Box>{userBalance} <strong>ETH</strong></Box>
-                        </Box>
-                        <Box>    
-                            <strong>And You Have :</strong> <Box>{RVLBalance} <strong>RVL</strong></Box>
-                        </Box>
                     </VStack>
                 </div>
               </MenuList>
@@ -100,6 +83,5 @@ export const Header: React.FC<{}> = () => {
           </Flex>
         </Flex>
       </Box>
-    </>
   );
 }
