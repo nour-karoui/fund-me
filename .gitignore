@@ -1,5 +1,5 @@
-./crowdfund/node_modules
-./crowdfund/.env
-./crowdfunding/node_modules
-./crowdfunding/.env
-./rvl-faucet/node_modules
+crowdfund/node_modules
+crowdfund/.env
+rvl-faucet/node_modules
+crowdfunding/node_modules
+crowdfunding/.env
