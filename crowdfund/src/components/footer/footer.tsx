@@ -5,7 +5,6 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 export const Footer: React.FC<{latestTransaction: string | undefined}> = ({latestTransaction}) => {
     const [lastTransactionHash, setLastTransactionHash] = React.useState<string|undefined>();
     useEffect(() => {
-        console.log(latestTransaction);
         if (latestTransaction) {
             setLastTransactionHash(`https://goerli.etherscan.io/tx/${latestTransaction}`);
         }
