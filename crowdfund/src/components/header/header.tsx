@@ -69,6 +69,7 @@ export const Header: React.FC<{}> = () => {
           </HStack>
 
           <Flex alignItems={'center'}>
+            { localStorage['isConnected'] && JSON.parse(localStorage['isConnected']) ?
             <Menu>
               <MenuButton
                 as={Button}
@@ -96,11 +97,11 @@ export const Header: React.FC<{}> = () => {
                 </div>
               </MenuList>
             </Menu>
+            :
+              <Button onClick={() => connectwalletHandler()} colorScheme={'teal'}>Connect With Metamask</Button>
+            }
           </Flex>
-
-
         </Flex>
-
       </Box>
     </>
   );

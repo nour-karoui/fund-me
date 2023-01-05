@@ -12,6 +12,13 @@ export const CreateProjectCard: React.FC<{}> = () => {
         try {
             const response = await projectsFactory.createNewProject(projectName, ethers.utils.parseUnits(projectBudget.toString(),"ether"), RVLToken.address);
             localStorage.setItem('lastTransactionHash', response.hash);
+            toast({
+                title: `Successfully Created ${projectName}`,
+                description: `Check the process of your transaction on Etherscan ${response.hash}`,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+              });
         } catch(error: any) {
             console.log(error.reason);
             toast({
