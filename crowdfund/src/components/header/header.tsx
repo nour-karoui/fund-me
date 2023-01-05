@@ -13,13 +13,16 @@ import {
   useColorModeValue,
   useToast
 } from '@chakra-ui/react';
-import { AtSignIcon } from '@chakra-ui/icons';
-
+import { CheckIcon, CopyIcon, AtSignIcon } from '@chakra-ui/icons';
+import { IconButton } from '@chakra-ui/react'
 
 export const Header: React.FC<{}> = () => {
   const [defaultAccount, setDefaultAccount] = useState<string|null>(null);
   const [userBalance, setUserBalance] = useState<string|null>(null);
   const [RVLBalance, setRVLBalance] = useState<string|null>(null);
+
+  const [copied, setCopied] = useState(false);
+
   const toast = useToast();
   const connectwalletHandler = () => {
       if (window.ethereum) {
@@ -42,7 +45,14 @@ export const Header: React.FC<{}> = () => {
       if(localStorage['isConnected'] && JSON.parse(localStorage['isConnected'])) {
           connectwalletHandler();
       }
-  })
+  });
+
+  const copyAddress = () => {
+      navigator.clipboard.writeText(defaultAccount ?? '');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+  }
+
   const accountChangedHandler = async (newAccount: any) => {
       const address = await newAccount.getAddress();
       setDefaultAccount(address);
@@ -77,7 +87,13 @@ export const Header: React.FC<{}> = () => {
                 <div>
                     <VStack p={5}>
                         <Box>
-                            <strong>Your Address is :</strong> <Box>{defaultAccount?.slice(0, 17)}...</Box>
+                            <strong>Your Address is :</strong>
+                            <Box>{defaultAccount?.slice(0, 17)}...
+                                <IconButton variant={"link"} aria-label="Copy" onClick={copyAddress}
+                                            icon={
+                                                copied ? <CheckIcon/> : <CopyIcon/>
+                                            }/>
+                            </Box>
                         </Box>
                         <Box>    
                             <strong>And You Have :</strong> <Box>{userBalance} <strong>ETH</strong></Box>
