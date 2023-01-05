@@ -1,5 +1,5 @@
 import { Center, FormLabel, Input, FormControl, Box, InputRightElement, InputGroup } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { ethers } from 'ethers';
 import {projectFundingABI} from '../../contracts/projectFunding';
 import { signer } from '../../helpers/initweb3';
@@ -8,11 +8,24 @@ import { SearchIcon } from '@chakra-ui/icons';
 
 export const ProjectsList: React.FC<{projectsFactory: any, handleProjectChange: any}> = ({projectsFactory, handleProjectChange}) => {
 
-    const [availableProjects, setAvailableProjects] = React.useState<string[]|null>(null);
+    const [availableProjects, setAvailableProjects] = useState<string[] | undefined>();
+    const [filteredProjects, setFilteredProjects] = useState<string[] | undefined>();
+    const [value, setValue] = useState('');
+
+    useEffect(() => {
+        setFilteredProjects(availableProjects);
+    }, availableProjects);
 
     useEffect(() => {
         fetchAvailableProjects();
     }, [projectsFactory]);
+
+    const handleInput = (event: any) => {
+        const val = event.target.value;
+        setFilteredProjects(availableProjects?.filter((project) => project.includes(val)));
+        setValue(val);
+    }
+
     const fetchAvailableProjects = async () => {
         if (projectsFactory) {
             const response = await projectsFactory.projectsCount();
@@ -27,24 +40,26 @@ export const ProjectsList: React.FC<{projectsFactory: any, handleProjectChange: 
     }
 
     return (
-        <Box 
-            maxW='lg' 
+        <Box
+            maxW='lg'
             borderWidth='1px'
             borderRadius='lg'
             borderColor='teal'
         >
             <InputGroup>
-                <Input placeholder='Project Name' />
+                <Input value={value} onChange={handleInput} placeholder='Project Name' />
                 <InputRightElement children={<SearchIcon color='teal.500' />} />
             </InputGroup>
-            {availableProjects?.map((project, i) => <Box onClick={() => handleProjectChange(project)} key={i} borderRadius='lg' p={4} _hover={{ color: "#F8F4EA", background: "#439A97", fontWeight: 'semibold', cursor: "pointer"}}>{project}</Box>)}
+            {
+                filteredProjects?.map(
+                    (project, i) =>
+                        <Box onClick={() => handleProjectChange(project)} key={i}
+                             borderRadius='lg' p={4}
+                             _hover={{ color: "#F8F4EA", background: "#439A97", fontWeight: 'semibold', cursor: "pointer"}}>
+                            {project}
+                        </Box>
+                )
+            }
         </Box>
-        // <Center mt={3} pt={10}>
-        //     <FormControl isRequired>
-        //         <FormLabel>Project Name</FormLabel>
-        //         <Input onChange={handleNameChange} value={projectName} placeholder='Project Name' />
-        //     </FormControl>
-        //     <Button colorScheme='teal' onClick={() => fetchProject()}>Click Me</Button>
-        // </Center>
     )
 }
