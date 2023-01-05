@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { VStack } from '@chakra-ui/react';
 import { ethers } from 'ethers';
-import { provider } from '../../helpers/initWeb3';
+import { provider, RVLToken } from '../../helpers/initweb3';
 import {
   Box,
   Flex,
@@ -19,6 +19,7 @@ import { AtSignIcon } from '@chakra-ui/icons';
 export const Header: React.FC<{}> = () => {
   const [defaultAccount, setDefaultAccount] = useState<string|null>(null);
   const [userBalance, setUserBalance] = useState<string|null>(null);
+  const [RVLBalance, setRVLBalance] = useState<string|null>(null);
   const toast = useToast();
   const connectwalletHandler = () => {
       if (window.ethereum) {
@@ -48,6 +49,8 @@ export const Header: React.FC<{}> = () => {
       localStorage.setItem('isConnected', true.toString());
       const balance = await newAccount.getBalance();
       setUserBalance(ethers.utils.formatEther(balance));
+      const RVLBalance = await RVLToken.balanceOf(address);
+      setRVLBalance(ethers.utils.formatEther(RVLBalance));
       await getuserBalance(address);
   }
   const getuserBalance = async (address: string) => {
@@ -85,6 +88,9 @@ export const Header: React.FC<{}> = () => {
                         </Box>
                         <Box>    
                             <strong>And You Have :</strong> <Box>{userBalance} <strong>ETH</strong></Box>
+                        </Box>
+                        <Box>    
+                            <strong>And You Have :</strong> <Box>{RVLBalance} <strong>RVL</strong></Box>
                         </Box>
                     </VStack>
                 </div>
