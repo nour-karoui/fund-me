@@ -3,7 +3,6 @@ import { useToast } from '@chakra-ui/react';
 import React, { useEffect } from "react";
 import { ethers } from 'ethers';
 import { projectsFactory, RVLToken, signer } from '../../helpers/initweb3';
-import { projectFundingABI } from '../../contracts/projectFunding';
 export const ProjectDetailCard: React.FC<{projectName: string}> = ({projectName}) => {
     const [amount, setAmount] = React.useState<number>(0);
     const [projectInitialBudget, setProjectInitialBudget] = React.useState<string>('');
@@ -31,15 +30,7 @@ export const ProjectDetailCard: React.FC<{projectName: string}> = ({projectName}
         try {
             const response = await project.fundProject(ethers.utils.parseUnits(amount.toString(),"ether"));
             localStorage.setItem('lastTransactionHash', response.hash);
-            toast({
-                title: `Successfully Funded ${projectName}`,
-                description: `Check the process of your transaction on Etherscan ${response.hash}`,
-                status: 'success',
-                duration: 3000,
-                isClosable: true,
-              });
         } catch(error: any) {
-            console.log(error.reason);
             toast({
                 title: `Something Went Wrong`,
                 description: error.reason,
