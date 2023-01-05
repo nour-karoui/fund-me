@@ -147,14 +147,14 @@ export const ProjectDetailCard: React.FC<{projectName: string, setLatestTransact
                             </NumberInputStepper>
                         </NumberInput>
                     </FormControl>
-                    <VStack m={5}>
+                    <VStack my={5}>
                         <Grid templateColumns='repeat(2, 1fr)' gap={6}>
-                            <Button colorScheme='linkedin' mr={2} onClick={() => fundProject()}>Fund Project</Button>
-                            <Button colorScheme='red' mr={2} onClick={() => refundAccount()}>Request Refund</Button>
+                            <Button colorScheme='green' mr={2} onClick={() => fundProject()}>Fund Project</Button>
+                            <Button colorScheme='red' onClick={() => refundAccount()}>Request Refund</Button>
                         </Grid>
                     </VStack>
                     <VStack>
-                        <Button colorScheme='whatsapp' onClick={() => updateBudget()}>Update Project Budget</Button>
+                        <Button width="100%" colorScheme='blue' onClick={() => updateBudget()}>Update Project Budget</Button>
                     </VStack>
                 </CardBody>
             </Card>
