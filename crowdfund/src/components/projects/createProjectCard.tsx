@@ -3,7 +3,7 @@ import React from "react";
 import { useToast } from '@chakra-ui/react';
 import { projectsFactory, RVLToken } from '../../helpers/initweb3';
 import { ethers } from 'ethers';
-export const CreateProjectCard: React.FC<{}> = () => {
+export const CreateProjectCard: React.FC<{setLatestTransaction: Function}> = ({setLatestTransaction}) => {
     const [projectName, setProjectName] = React.useState<string>('');
     const [projectBudget, setProjectBudget] = React.useState<number>(0);
     const toast = useToast();
@@ -11,7 +11,7 @@ export const CreateProjectCard: React.FC<{}> = () => {
         console.log('Creating a new project');
         try {
             const response = await projectsFactory.createNewProject(projectName, ethers.utils.parseUnits(projectBudget.toString(),"ether"), RVLToken.address);
-            localStorage.setItem('lastTransactionHash', response.hash);
+            setLatestTransaction(response.hash);
             toast({
                 title: `Successfully Created ${projectName}`,
                 description: `Check the process of your transaction on Etherscan ${response.hash}`,

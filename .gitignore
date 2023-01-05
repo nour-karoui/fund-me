@@ -6,3 +6,6 @@ rvl-faucet/node_modules
 crowdfunding/node_modules
 crowdfunding/.env
 crowdfunding/.DS_Store
+.idea
+*/node_modules
+*/package-lock.json

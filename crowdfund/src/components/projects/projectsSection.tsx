@@ -8,7 +8,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import { create } from "domain";
 
 
-export const ProjectsSection: React.FC<{}> = () => {
+export const ProjectsSection: React.FC<{setLatestTransaction: Function}> = ({setLatestTransaction}) => {
     const [projectsFactoryContract, setProjectsFactory] = React.useState<Object|null>(null);
     const [currentProject, setCurrentProject] = React.useState<string>('');
     const [showCard, setShowCard] = React.useState<boolean>(false);
@@ -36,7 +36,7 @@ export const ProjectsSection: React.FC<{}> = () => {
             { showCard ?
                 <Flex alignContent={"center"} justifyContent={"center"}>
                     <Center>
-                        <CreateProjectCard></CreateProjectCard>
+                        <CreateProjectCard setLatestTransaction={setLatestTransaction}></CreateProjectCard>
                     </Center>
                 </Flex>
             : null
@@ -48,7 +48,8 @@ export const ProjectsSection: React.FC<{}> = () => {
                 </GridItem>
                 <GridItem p={4} w='100%'>
                     {currentProject != ''
-                        ? <ProjectDetailCard projectName={currentProject}></ProjectDetailCard>
+                        ? <ProjectDetailCard projectName={currentProject}
+                                             setLatestTransaction={setLatestTransaction}/>
                         : null
                     }
                     {/* <CreateProjectCard></CreateProjectCard> */}

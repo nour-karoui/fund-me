@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Alert, AlertDescription, AlertIcon, AlertTitle, ChakraProvider, useToast } from '@chakra-ui/react';
 import './App.css';
 import { Header } from './components/header/header';
@@ -6,14 +6,17 @@ import { ProjectsSection } from './components/projects/projectsSection';
 import { Footer } from './components/footer/footer';
 
 const App: React.FC<{}> = () => {
+
+  const [latestTransaction, setLatestTransaction] = useState();
+
   return (
     <div className="App">
       {
         window.ethereum ?
         <ChakraProvider>
           <Header></Header>
-          <ProjectsSection></ProjectsSection>
-          <Footer></Footer>
+          <ProjectsSection setLatestTransaction={setLatestTransaction}></ProjectsSection>
+          <Footer latestTransaction={latestTransaction}></Footer>
         </ChakraProvider>
         :
         <ChakraProvider>

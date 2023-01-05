@@ -4,7 +4,8 @@ import React, { useEffect } from "react";
 import { ethers } from 'ethers';
 import { projectsFactory, RVLToken, signer } from '../../helpers/initweb3';
 import { projectFundingABI } from '../../contracts/projectFunding';
-export const ProjectDetailCard: React.FC<{projectName: string}> = ({projectName}) => {
+export const ProjectDetailCard: React.FC<{projectName: string, setLatestTransaction: Function}> =
+    ({projectName, setLatestTransaction}) => {
     const [amount, setAmount] = React.useState<number>(0);
     const [projectInitialBudget, setProjectInitialBudget] = React.useState<string>('');
     const [projectRemainingBudget, setProjectRemainingBudget] = React.useState<string>('');
@@ -30,7 +31,7 @@ export const ProjectDetailCard: React.FC<{projectName: string}> = ({projectName}
         console.log('Approved:', approval);
         try {
             const response = await project.fundProject(ethers.utils.parseUnits(amount.toString(),"ether"));
-            localStorage.setItem('lastTransactionHash', response.hash);
+            setLatestTransaction(response.hash);
             toast({
                 title: `Successfully Funded ${projectName}`,
                 description: `Check the process of your transaction on Etherscan ${response.hash}`,
@@ -53,7 +54,7 @@ export const ProjectDetailCard: React.FC<{projectName: string}> = ({projectName}
     const refundAccount = async () => {
         try {
             const response = await project.refund(ethers.utils.parseUnits(amount.toString(), "ether"));
-            localStorage.setItem('lastTransactionHash', response.hash);
+            setLatestTransaction(response.hash);
             toast({
                 title: `You Got Refunds, Congrats!`,
                 description: `Check the process of your transaction on Etherscan ${response.hash}`,
@@ -75,7 +76,7 @@ export const ProjectDetailCard: React.FC<{projectName: string}> = ({projectName}
     const updateBudget = async () => {
         try {
             const response = await project.updateBudget(ethers.utils.parseUnits(amount.toString(), "ether"));
-            localStorage.setItem('lastTransactionHash', response.hash);
+            setLatestTransaction(response.hash);
             toast({
                 title: `You updated the project: ${projectName}`,
                 description: `Check the process of your transaction on Etherscan ${response.hash}`,
