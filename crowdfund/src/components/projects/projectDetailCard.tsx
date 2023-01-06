@@ -11,10 +11,26 @@ export const ProjectDetailCard: React.FC<{projectName: string, setLatestTransact
     const [projectRemainingBudget, setProjectRemainingBudget] = React.useState<string>('');
     const [project, setProject] = React.useState<any>(null);
     const toast = useToast();
+
     useEffect(() => {
         setProjectElements();
-    })
-
+        if (project) {
+            console.log('i am here');
+            console.log(project);
+            project
+            .on('BudgetReached', async (event: any) => {
+                console.log(event);
+                toast({
+                    title: `Project ${projectName.toUpperCase()} Reached Budget`,
+                    description: `Congrats PEEPS !`,
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                  });
+            })
+            .on('error', console.error);
+        }
+    }, [projectName])
     const setProjectElements = async () => {
         const projectAddress = await projectsFactory.getProjectAddress(projectName);
         const project = new ethers.Contract(projectAddress, projectFundingABI, signer);
@@ -26,7 +42,7 @@ export const ProjectDetailCard: React.FC<{projectName: string, setLatestTransact
     }
 
     const fundProject = async () => {
-        console.log('Creating a new project');
+        console.log('Funding a project');
         const approval = await RVLToken.approve(project.address, ethers.utils.parseUnits(amount.toString(),"ether"));
         console.log('Approved:', approval);
         try {
