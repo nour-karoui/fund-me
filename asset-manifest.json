@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/rvl-faucet/static/css/main.073c9b0a.css",
-    "main.js": "/rvl-faucet/static/js/main.95714c4a.js",
-    "static/js/787.c6cabef9.chunk.js": "/rvl-faucet/static/js/787.c6cabef9.chunk.js",
-    "index.html": "/rvl-faucet/index.html",
-    "main.073c9b0a.css.map": "/rvl-faucet/static/css/main.073c9b0a.css.map",
-    "main.95714c4a.js.map": "/rvl-faucet/static/js/main.95714c4a.js.map",
-    "787.c6cabef9.chunk.js.map": "/rvl-faucet/static/js/787.c6cabef9.chunk.js.map"
+    "main.css": "/fund-me/static/css/main.073c9b0a.css",
+    "main.js": "/fund-me/static/js/main.398e7994.js",
+    "static/js/787.385eb0f9.chunk.js": "/fund-me/static/js/787.385eb0f9.chunk.js",
+    "index.html": "/fund-me/index.html",
+    "main.073c9b0a.css.map": "/fund-me/static/css/main.073c9b0a.css.map",
+    "main.398e7994.js.map": "/fund-me/static/js/main.398e7994.js.map",
+    "787.385eb0f9.chunk.js.map": "/fund-me/static/js/787.385eb0f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.95714c4a.js"
+    "static/js/main.398e7994.js"
   ]
 }
