@@ -3,7 +3,6 @@ import './App.css';
 import { GetFunds } from './components/faucet/getFunds';
 import { Alert, AlertDescription, AlertIcon, AlertTitle, ChakraProvider } from '@chakra-ui/react';
 import { Header } from './components/header/header';
-import { Footer } from './components/footer/footer';
 
 const App: React.FC<{}> = () => {
   return (
