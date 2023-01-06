@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/rvl-faucet/static/css/main.073c9b0a.css",
+    "main.js": "/rvl-faucet/static/js/main.95714c4a.js",
+    "static/js/787.c6cabef9.chunk.js": "/rvl-faucet/static/js/787.c6cabef9.chunk.js",
+    "index.html": "/rvl-faucet/index.html",
+    "main.073c9b0a.css.map": "/rvl-faucet/static/css/main.073c9b0a.css.map",
+    "main.95714c4a.js.map": "/rvl-faucet/static/js/main.95714c4a.js.map",
+    "787.c6cabef9.chunk.js.map": "/rvl-faucet/static/js/787.c6cabef9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.95714c4a.js"
+  ]
+}
