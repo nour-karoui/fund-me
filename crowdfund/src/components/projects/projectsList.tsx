@@ -14,7 +14,7 @@ export const ProjectsList: React.FC<{projectsFactory: any, handleProjectChange: 
 
     useEffect(() => {
         setFilteredProjects(availableProjects);
-    }, availableProjects);
+    }, [availableProjects]);
 
     useEffect(() => {
         fetchAvailableProjects();

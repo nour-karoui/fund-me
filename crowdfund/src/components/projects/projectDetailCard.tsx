@@ -1,31 +1,47 @@
-import { NumberInput, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, NumberInputField, FormControl, FormLabel, Card, CardHeader, CardBody, CardFooter, Heading, Text, Button, Input, Center, Stack, Box, Flex, Grid, VStack, Alert, AlertIcon, Link, Spinner, AlertTitle, AlertDescription, HStack } from '@chakra-ui/react';
+import { NumberInput, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, NumberInputField, FormControl, FormLabel, Card, CardHeader, CardBody, CardFooter, Heading, Text, Button, Input, Center, Stack, Box, Flex, Grid, VStack, Alert, AlertIcon, Link, Spinner, AlertTitle, AlertDescription, HStack, IconButton } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 import React, { useEffect } from "react";
 import { ethers } from 'ethers';
 import { projectsFactory, provider, RVLToken, signer } from '../../helpers/initweb3';
 import { projectFundingABI } from '../../contracts/projectFunding';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { CheckIcon, CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 export const ProjectDetailCard: React.FC<{projectName: string, setLatestTransaction: Function}> =
     ({projectName, setLatestTransaction}) => {
     const etherscanUrl = 'https://goerli.etherscan.io/tx/';
     const [amount, setAmount] = React.useState<number>(0);
     const [projectInitialBudget, setProjectInitialBudget] = React.useState<string>('');
     const [projectRemainingBudget, setProjectRemainingBudget] = React.useState<string>('');
+    const [projectAddress, setProjectAddress] = React.useState<string>('');
     const [project, setProject] = React.useState<any>(null);
     const [budgetReached, setBudgetReached] = React.useState<boolean>(false);
-    const [blockAddress, setBlockAddress] = React.useState<string>('');
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [lastTransactionHash, setLastTransactionHash] = React.useState<string>('');
+    const [copied, setCopied] = React.useState<boolean>(false);
+    const [lastFunder, setLastFunder] = React.useState<string>('');
+    const [miner, setMiner] = React.useState<string>('');
     const toast = useToast();
 
     useEffect(() => {
         setProjectElements();
-        if (project) {
-            project
-            .on('BudgetReached', async (event: any) => {
-                console.log(event);
+    }, [projectName]);
+
+    const setProjectElements = async () => {
+        const projectAddress = await projectsFactory.getProjectAddress(projectName);
+        setProjectAddress(projectAddress);
+        const project = new ethers.Contract(projectAddress, projectFundingABI, signer);
+        setProject(project);
+        const initialBudget = await project.getBudget();
+        setProjectInitialBudget(ethers.utils.formatEther(initialBudget));
+        const remainingBudget = await project.getRemainingBudget();
+        setProjectRemainingBudget(ethers.utils.formatEther(remainingBudget));
+        project
+            .on('BudgetReached', async (budget: string, funder: string, miner: string) => {
+                console.log('budget is reached');
+                console.log(funder);
+                console.log(miner);
                 setBudgetReached(true);
-                // setBlockAddress(event.blockAddress);
+                setLastFunder(funder);
+                setMiner(miner);
                 toast({
                     title: `Project ${projectName.toUpperCase()} Reached Budget`,
                     description: `Congrats PEEPS !`,
@@ -35,17 +51,6 @@ export const ProjectDetailCard: React.FC<{projectName: string, setLatestTransact
                   });
             })
             .on('error', console.error);
-        }
-    }, [projectName]);
-
-    const setProjectElements = async () => {
-        const projectAddress = await projectsFactory.getProjectAddress(projectName);
-        const project = new ethers.Contract(projectAddress, projectFundingABI, signer);
-        setProject(project);
-        const initialBudget = await project.getBudget();
-        setProjectInitialBudget(ethers.utils.formatEther(initialBudget));
-        const remainingBudget = await project.getRemainingBudget();
-        setProjectRemainingBudget(ethers.utils.formatEther(remainingBudget));
     }
 
     const fundProject = async () => {
@@ -136,6 +141,13 @@ export const ProjectDetailCard: React.FC<{projectName: string, setLatestTransact
         }
     }
 
+    const copyAddress = () => {
+        navigator.clipboard.writeText(projectAddress ?? '');
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    }
+  
+
     const handleAmountChange = (e: any) => {
         setAmount(e.target.value);
     }
@@ -171,7 +183,7 @@ export const ProjectDetailCard: React.FC<{projectName: string, setLatestTransact
             :
                 <Card maxW='lg' borderWidth='1px' borderRadius='lg' borderColor='teal' align='center'>
                     <CardHeader>
-                        <Heading size='md'> Fetch Project Details</Heading>
+                        <Heading size='md'>{projectName}</Heading>
                     </CardHeader>
                     <CardBody>
                         <Card mb={3}>
@@ -179,10 +191,14 @@ export const ProjectDetailCard: React.FC<{projectName: string, setLatestTransact
                                 <Stack spacing='4'>
                                 <Box>
                                     <Heading size='xs' textTransform='uppercase'>
-                                    Project Name
+                                    Project Address
                                     </Heading>
                                     <Text pt='2' fontSize='sm'>
-                                        {projectName}
+                                        {projectAddress?.slice(0, 17)}...
+                                        <IconButton variant={"link"} aria-label="Copy" onClick={copyAddress}
+                                            icon={
+                                                copied ? <CheckIcon/> : <CopyIcon/>
+                                            }/>
                                     </Text>
                                 </Box>
                                 <Box>
@@ -226,12 +242,23 @@ export const ProjectDetailCard: React.FC<{projectName: string, setLatestTransact
                     </CardBody>
                     { budgetReached?
                         <CardFooter>
-                            <Alert borderRadius={'lg'} status='success'>
-                                <AlertIcon />
-                                <Link href={blockAddress} isExternal>
-                                    Project Buget Reached ! Congrats ! <ExternalLinkIcon mx='2px' />
-                                </Link>
-                    </Alert>
+                            <Alert
+                            status='success'
+                            variant='subtle'
+                            flexDirection='column'
+                            alignItems='center'
+                            justifyContent='center'
+                            textAlign='center'
+                            height='200px'
+                            >
+                                <AlertTitle mt={4} mb={1} fontSize='lg'>
+                                    Projet Reached The Budget !!!
+                                </AlertTitle>
+                                <AlertDescription maxWidth='sm'>
+                                    <Stack><strong>Last Funder:</strong> <Text>{lastFunder.slice(0,10)}...</Text></Stack>
+                                    <Stack><strong>Block Miner:</strong> <Text>{miner.slice(0,10)}...</Text></Stack>
+                                </AlertDescription>
+                            </Alert>
                         </CardFooter>
                     :
                         null

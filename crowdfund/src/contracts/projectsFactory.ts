@@ -104,4 +104,4 @@ export const projectsFactoryABI = [
   }
 ];
 
-export const projectsFactoryAddress = '0x53aa4bBC476Cd7C916aFfAfE84868fcfeFcd8c4D';
+export const projectsFactoryAddress = '0x3eAd7C8840Bcd70E24B75F7F06497FBBD6Ea5158';
