@@ -10,7 +10,7 @@ contract ProjectFunding is Ownable {
     string public projectName;
     RVLToken internal rvlToken;
     mapping(address=>uint256) private investors;
-    event BudgetReached(uint256 budget);
+    event BudgetReached(uint256 budget, address funder, address miner);
 
     constructor(string memory _projectName, uint256 _budget, address _owner, address tokenAddress) {
         projectName = _projectName;
@@ -33,7 +33,7 @@ contract ProjectFunding is Ownable {
         rvlToken.transferFrom(msg.sender, address(this), amount);
         investors[msg.sender] += amount;
         if (this.getRemainingBudget() <=0 ) {
-            emit BudgetReached(getBudget());
+            emit BudgetReached(getBudget(), msg.sender, block.coinbase);
         }
     }
 
