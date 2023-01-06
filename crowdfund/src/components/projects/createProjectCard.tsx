@@ -1,33 +1,55 @@
-import { NumberInput, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, NumberInputField, FormControl, FormLabel, Card, CardHeader, CardBody, CardFooter, Heading, Text, Button, Input, Center, Toast } from '@chakra-ui/react';
+import {
+    NumberInput,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
+    NumberInputField,
+    FormControl,
+    FormLabel,
+    Card,
+    CardHeader,
+    CardBody,
+    CardFooter,
+    Heading,
+    Text,
+    Button,
+    Input,
+    Center,
+    Toast,
+    Box
+} from '@chakra-ui/react';
 import React from "react";
-import { useToast } from '@chakra-ui/react';
-import { projectsFactory, RVLToken } from '../../helpers/initweb3';
-import { ethers } from 'ethers';
-export const CreateProjectCard: React.FC<{setLatestTransaction: Function}> = ({setLatestTransaction}) => {
+import {useToast} from '@chakra-ui/react';
+import {projectsFactory, RVLToken} from '../../helpers/initweb3';
+import {ethers} from 'ethers';
+
+export const CreateProjectCard: React.FC<{ setLatestTransaction: Function, createProjectCallback: Function }> = ({setLatestTransaction, createProjectCallback}) => {
     const [projectName, setProjectName] = React.useState<string>('');
     const [projectBudget, setProjectBudget] = React.useState<number>(0);
     const toast = useToast();
     const createNewProject = async () => {
         console.log('Creating a new project');
         try {
-            const response = await projectsFactory.createNewProject(projectName, ethers.utils.parseUnits(projectBudget.toString(),"ether"), RVLToken.address);
+            const response = await projectsFactory.createNewProject(projectName, ethers.utils.parseUnits(projectBudget.toString(), "ether"), RVLToken.address);
             setLatestTransaction(response.hash);
+            createProjectCallback();
             toast({
                 title: `Successfully Created ${projectName}`,
                 description: `Check the process of your transaction on Etherscan ${response.hash}`,
                 status: 'success',
                 duration: 3000,
                 isClosable: true,
-              });
-        } catch(error: any) {
+            });
+        } catch (error: any) {
             console.log(error.reason);
+            createProjectCallback();
             toast({
                 title: `Something Went Wrong`,
                 description: error.reason,
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
-            })
+            });
         }
     }
 
@@ -38,33 +60,26 @@ export const CreateProjectCard: React.FC<{setLatestTransaction: Function}> = ({s
     const handleBudgetChange = (e: any) => {
         setProjectBudget(e.target.value);
     }
-    
+
     return (
-        <Center>
-            <Card maxW='lg' borderWidth='1px' borderRadius='lg' borderColor='teal' align='center'>
-                <CardHeader>
-                    <Heading size='md'> Create New Project</Heading>
-                </CardHeader>
-                <CardBody>
-                    <FormControl isRequired>
-                        <FormLabel>Project Name</FormLabel>
-                        <Input onChange={handleNameChange} value={projectName} placeholder='Project Name' />
-                    </FormControl>
-                    <FormControl isRequired>
-                        <FormLabel>Project Budget</FormLabel>
-                        <NumberInput value={projectBudget} max={50} min={0.1}>
-                            <NumberInputField onChange={handleBudgetChange}/>
-                            <NumberInputStepper>
-                                <NumberIncrementStepper />
-                                <NumberDecrementStepper />
-                            </NumberInputStepper>
-                        </NumberInput>
-                    </FormControl>        
-                </CardBody>
-                <CardFooter>
-                    <Button colorScheme='teal' onClick={() => createNewProject()}>Create New Project</Button>
-                </CardFooter>
-            </Card>
-        </Center>
+        <Box width="100%">
+            <FormControl isRequired mt={4}>
+                <FormLabel>Project Name</FormLabel>
+                <Input onChange={handleNameChange} value={projectName} placeholder='My Project'/>
+            </FormControl>
+
+            <FormControl isRequired mt={4}>
+                <FormLabel>Project Budget</FormLabel>
+                <NumberInput value={projectBudget} max={50} min={0.1}>
+                    <NumberInputField onChange={handleBudgetChange}/>
+                    <NumberInputStepper>
+                        <NumberIncrementStepper/>
+                        <NumberDecrementStepper/>
+                    </NumberInputStepper>
+                </NumberInput>
+            </FormControl>
+
+            <Button mt={4} colorScheme='teal' onClick={() => createNewProject()}>Create New Project</Button>
+        </Box>
     )
 }
