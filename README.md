@@ -8,9 +8,9 @@ It is an **ERC20 Token** hosted on **Goerli Testnet**.
 ## ✂️ How is this project divided?
 The project is divided into 3 main sections:
 1. ***Truffle-Crowdfunding:*** The truffle project, containing all the smart contracts used for this project and their deployments configurations.
-2. ***Crowdfund:*** The Dapp that allows users to interact with our smart contracts, create and fund projects. [*Visit Crowd Fund Me*](http://rvl-crowdfund-me.s3-website-us-east-1.amazonaws.com/){:target="\_blank"}
+2. ***Crowdfund:*** The Dapp that allows users to interact with our smart contracts, create and fund projects. [*Visit Crowd Fund Me*](http://rvl-crowdfund-me.s3-website-us-east-1.amazonaws.com/)
 3. ***RVL-Faucet:*** The faucet that allows users to receive some RVL.
-[*Visit RVL-Faucet*](http://rvl-faucet.s3-website-us-east-1.amazonaws.com/){:target="\_blank"}
+[*Visit RVL-Faucet*](http://rvl-faucet.s3-website-us-east-1.amazonaws.com/)
 
 ## 🙌 What is RVL Crowdfunding?
 It is a **decentralized crowdfunding app** hosted on **Goerli Testnet** built with ***Truffle Framework***, ***ReactJs*** and ***ethers.js*** library.
