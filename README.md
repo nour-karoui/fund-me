@@ -3,7 +3,7 @@ HELLO <img src="https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master
 ## 💰 What is RVL?
 
 It is an **ERC20 Token** hosted on **Goerli Testnet**.  
-IRVL address is: **0x858bdC45260c796C22f6E43765e79B6DDbfF5a2D**
+***RVL Token*** on **Goerli** address is: **0x858bdC45260c796C22f6E43765e79B6DDbfF5a2D**
 
 ## ✂️ How is this project divided?
 The project is divided into 3 main sections:
