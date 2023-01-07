@@ -50,22 +50,62 @@ Run this command to install dependencies:
 
 **These are the main commands that would help you interact with our smart contracts:**  
 1. Compiling the contracts (this will generate a JSON file for each contract found in build/contracts)
-```shell
-    truffle compile
-```
+    ```shell
+        truffle compile
+    ```
 2. Deploying the contracts
-```shell
-    truffle migrate --network <NETWORK_NAME>
-    truffle run verify <CONTRACT_NAME>
-```
-3. Interacting with the contracts
-```shell
-    truffle console --network <network-name>
-```
-4. Running unit tests
-```shell
-    truffle test --network <network-name>
-```
+    ```shell
+        truffle migrate --network <NETWORK_NAME>
+        truffle run verify <CONTRACT_NAME>
+    ```
+3. Running unit tests
+    ```shell
+        truffle test --network <network-name>
+    ```
+4. Interacting with the contracts
+    ```shell
+        truffle console --network <network-name>
+    ```  
+    1. Instanciating the deployed contracts
+        ```shell
+        const rvlFacuet = await RVLFaucet.deployed()
+        const rvlToken = await RVLToken.deployed()
+        const projectsFactory = await ProjectsFactory.deployed()
+        const accounts = await web3.eth.getAccounts()
+        ```     
+    2. Funding the RVLFaucet
+        ```shell
+        # give access to rvlFaucet to transfer from accounts[0]
+        await rvlToken.approve(rvlFaucet.address, web3.utils.toWei('10', 'ether'), {from: accounts[0]})
+        await rvlFaucet.fundFaucet(web3.utils.toWei('10', 'ether'), {from: accounts[0]})
+        ```    
+    3. Using the faucet to funds accounts[1]
+        ```shell
+        await rvlFaucet.fundFaucet(accounts[1], {from: accounts[1]})
+        const balance = await rvlToken.balanceOf(accounts[1])
+        ```    
+    4. Create a new project
+        ```shell
+        await projectsFactory.createNewProject('test project', web3.utils.toWei('10', 'ether'), rvlToken.address, {from: accounts[1]})
+        const testProjectAddress = await projectsFactory.getProjectAddress('test project')
+        const testProject = await ProjectFunding.at(testProjectAddress)
+        ```    
+    5. Fund project
+        ```shell
+        await rvlToken.approve(testProject.address, web3.utils.toWei('1', 'ether'), {from: accounts[1]})
+        await testProject.fundProject(web3.utils.toWei('1', 'ether'), {from: accounts[1]})
+        ``` 
+    6. Request refunds
+         ```shell
+        await testProject.refund(web3.utils.toWei('1', 'ether'))
+        ``` 
+    6. Update project budget
+         ```shell
+         # throws an error because sender is not the owner of the transaction
+        await testProject.updateBudget(web3.utils.toWei('15', 'ether'), {from: accounts[0]})
+        # updates project budget successfully
+        await testProject.updateBudget(web3.utils.toWei('15', 'ether'), {from: accounts[1]})
+        ``` 
 
 ### 🚀 Running The Crowdfunding & Faucet DApp
 

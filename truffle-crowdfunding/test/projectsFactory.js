@@ -33,25 +33,25 @@ contract('ProjectFunding', () => {
     it('Should allow participants to fund project', async () => {
         await RVL.approve(project.address, web3.utils.toWei('5','ether'));
         await project.fundProject(web3.utils.toWei('5', 'ether'));
-        const remainingBudget = await project.remainingBalance();
+        const remainingBudget = await project.getRemainingBudget();
         assert.equal(web3.utils.fromWei(remainingBudget), '5');
     })
     it('Should allow participants to get refunds as long as the budget is not reached', async () => {
         await project.refund(web3.utils.toWei('5', 'ether'));
         const accountBalance = await RVL.balanceOf(accounts[0]);
         assert.equal(web3.utils.fromWei(accountBalance), '1000');
-        const remainingBudget = await project.remainingBalance();
+        const remainingBudget = await project.getRemainingBudget();
         assert.equal(web3.utils.fromWei(remainingBudget), '10');
     })
     it('Should not allow participants to get refunds if the budget is reached', async () => {
         await RVL.approve(project.address, web3.utils.toWei('10','ether'));
         await project.fundProject(web3.utils.toWei('10', 'ether'));
-        const remainingBudget = await project.remainingBalance();
+        const remainingBudget = await project.getRemainingBudget();
         assert.equal(web3.utils.fromWei(remainingBudget), '0');
         await truffleAssert.fails(project.refund(web3.utils.toWei('5', 'ether')), truffleAssert.ErrorType.REVERT);
     })
     it('Should not allow participants to give donations higher than current remaining budget', async () => {
-        const remainingBudget = await project.remainingBalance();
+        const remainingBudget = await project.getRemainingBudget();
         assert.equal(web3.utils.fromWei(remainingBudget), '0');
         await RVL.approve(project.address, web3.utils.toWei('10', 'ether'));
         await truffleAssert.fails(project.fundProject(web3.utils.toWei('5', 'ether')), truffleAssert.ErrorType.REVERT);

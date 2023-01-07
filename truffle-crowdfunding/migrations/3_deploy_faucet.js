@@ -1,5 +1,5 @@
-//const RVLFaucet = artifacts.require("RVLFaucet");
-
+const RVLFaucet = artifacts.require("RVLFaucet");
+const RVLToken = artifacts.require("RVLToken");
 module.exports = (deployer) => {
-    //deployer.deploy(RVLFaucet, '0x858bdC45260c796C22f6E43765e79B6DDbfF5a2D');
+    deployer.deploy(RVLFaucet, RVLToken.address);
 }
