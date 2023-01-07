@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { VStack } from '@chakra-ui/react';
+import { Link, VStack } from '@chakra-ui/react';
 import { ethers } from 'ethers';
 import { provider, RVLToken } from '../../helpers/initweb3';
 import {
@@ -13,7 +13,7 @@ import {
   useColorModeValue,
   useToast
 } from '@chakra-ui/react';
-import { CheckIcon, CopyIcon, AtSignIcon } from '@chakra-ui/icons';
+import { CheckIcon, CopyIcon, AtSignIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { IconButton } from '@chakra-ui/react'
 
 export const Header: React.FC<{}> = () => {
@@ -68,6 +68,9 @@ export const Header: React.FC<{}> = () => {
           
           <HStack spacing={8} alignItems={'center'}>
             <Box>Crowd Fund me</Box>
+            <Link href={'http://rvl-faucet.s3-website-us-east-1.amazonaws.com/'} isExternal>
+                Get Some RVL <ExternalLinkIcon mx='2px' />
+            </Link>
           </HStack>
 
           <Flex alignItems={'center'}>

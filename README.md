@@ -7,9 +7,11 @@ IRVL address is: **0x858bdC45260c796C22f6E43765e79B6DDbfF5a2D**
 
 ## ✂️ How is this project divided?
 The project is divided into 3 main sections:
-1. ***Truffle-crowdfunding:*** The truffle project, containing all the smart contracts used for this project and their deployments configurations.
+1. ***Truffle-Crowdfunding:*** The truffle project, containing all the smart contracts used for this project and their deployments configurations.
+[Truffle-Crowdfunding](http://rvl-crowdfund-me.s3-website-us-east-1.amazonaws.com/)
 2. ***Crowdfund:*** The Dapp that allows users to interact with our smart contracts, create and fund projects.
 3. ***RVL-Faucet:*** The faucet that allows users to receive some RVL.
+[RVL-Faucet](http://rvl-faucet.s3-website-us-east-1.amazonaws.com/)
 
 ## 🙌 What is RVL Crowdfunding?
 It is a **decentralized crowdfunding app** hosted on **Goerli Testnet** built with ***Truffle Framework***, ***ReactJs*** and ***ethers.js*** library.
